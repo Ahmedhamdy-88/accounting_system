@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإعدادات - نظام المحاسبة للإنتاج الفني</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar for desktop -->
+        <div class="sidebar w-64 text-white hidden md:block">
+            <div class="p-4">
+                <div class="flex items-center justify-center mb-8">
+                    <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-film text-white"></i>
+                    </div>
+                </div>
+                <div class="mb-10 text-center">
+                    <div class="h-16 w-16 mx-auto rounded-full border-2 border-white mb-2 bg-gray-600 flex items-center justify-center">
+                        <i class="fas fa-user text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-bold" id="currentUserName">المستخدم</h4>
+                    <p class="text-xs text-gray-300" id="currentUserRole">الدور</p>
+                </div>
+                <nav>
+                    <div class="mb-4">
+                        <h5 class="text-sm uppercase text-gray-400 mb-2 px-4">القائمة الرئيسية</h5>
+                        <a href="/dashboard.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-chart-line mr-2"></i> لوحة التحكم
+                        </a>
+                        <a href="/projects.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-film mr-2"></i> المشاريع
+                        </a>
+                        <a href="/payroll.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-money-bill-wave mr-2"></i> الرواتب والمصروفات
+                        </a>
+                        <a href="/transactions.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-dollar-sign mr-2"></i> المعاملات
+                        </a>
+                        <a href="/reports.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-chart-pie mr-2"></i> التقارير
+                        </a>
+                    </div>
+                    <div class="mb-4" id="adminSection" style="display: none;">
+                        <h5 class="text-sm uppercase text-gray-400 mb-2 px-4">الإدارة</h5>
+                        <a href="/users.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-users mr-2"></i> المستخدمين
+                        </a>
+                        <a href="/settings.html" class="block py-2 px-4 rounded-lg bg-gray-800 text-white mb-1">
+                            <i class="fas fa-cog mr-2"></i> الإعدادات
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Mobile menu overlay -->
+        <div id="mobileMenu" class="fixed inset-0 z-50 md:hidden hidden">
+            <div class="fixed inset-0 bg-black bg-opacity-50" id="mobileMenuOverlay"></div>
+            <div class="fixed right-0 top-0 h-full w-64 bg-gray-800 text-white transform transition-transform duration-300 ease-in-out">
+                <div class="p-4">
+                    <div class="flex justify-between items-center mb-8">
+                        <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-film text-white"></i>
+                        </div>
+                        <button id="closeMobileMenu" class="text-white hover:text-gray-300">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="mb-10 text-center">
+                        <div class="h-16 w-16 mx-auto rounded-full border-2 border-white mb-2 bg-gray-600 flex items-center justify-center">
+                            <i class="fas fa-user text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-bold" id="mobileCurrentUserName">المستخدم</h4>
+                        <p class="text-xs text-gray-300" id="mobileCurrentUserRole">الدور</p>
+                    </div>
+                    <nav>
+                        <div class="mb-4">
+                            <h5 class="text-sm uppercase text-gray-400 mb-2 px-4">القائمة الرئيسية</h5>
+                            <a href="/dashboard.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-chart-line mr-2"></i> لوحة التحكم
+                            </a>
+                            <a href="/projects.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-film mr-2"></i> المشاريع
+                            </a>
+                            <a href="/payroll.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-money-bill-wave mr-2"></i> الرواتب والمصروفات
+                            </a>
+                            <a href="/transactions.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-dollar-sign mr-2"></i> المعاملات
+                            </a>
+                            <a href="/reports.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-chart-pie mr-2"></i> التقارير
+                            </a>
+                        </div>
+                        <div class="mb-4" id="mobileAdminSection" style="display: none;">
+                            <h5 class="text-sm uppercase text-gray-400 mb-2 px-4">الإدارة</h5>
+                            <a href="/users.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-users mr-2"></i> المستخدمين
+                            </a>
+                            <a href="/settings.html" class="block py-2 px-4 rounded-lg bg-gray-700 text-white mb-1">
+                                <i class="fas fa-cog mr-2"></i> الإعدادات
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main content -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top header -->
+            <header class="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <button id="mobileMenuButton" class="md:hidden mr-4 text-gray-600 hover:text-gray-900">
+                            <i class="fas fa-bars text-xl"></i>
+                        </button>
+                        <h1 class="text-2xl font-bold text-gray-900">إعدادات النظام</h1>
+                    </div>
+                    <div class="flex items-center space-x-4 space-x-reverse">
+                        <div class="relative">
+                            <input type="text" placeholder="بحث..." class="bg-gray-100 border border-gray-300 rounded-lg px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-red-500" id="searchInput">
+                            <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
+                        </div>
+                        <div class="relative">
+                            <button class="text-gray-600 hover:text-gray-900 relative">
+                                <i class="fas fa-bell text-xl"></i>
+                                <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">3</span>
+                            </button>
+                        </div>
+                        <div class="relative">
+                            <button id="userMenuButton" class="flex items-center space-x-2 space-x-reverse text-gray-700 hover:text-gray-900">
+                                <div class="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user text-sm"></i>
+                                </div>
+                                <span id="headerUserName">admin</span>
+                                <i class="fas fa-chevron-down text-sm"></i>
+                            </button>
+                            <div id="userDropdown" class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">الملف الشخصي</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">الإعدادات</a>
+                                <hr class="my-1">
+                                <a href="#" onclick="logout()" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">تسجيل الخروج</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Page content -->
+            <main class="flex-1 overflow-y-auto p-6">
+                <div class="max-w-7xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- General Settings -->
+                        <div class="dashboard-card p-6">
+                            <h2 class="text-xl font-bold text-gray-900 mb-6">الإعدادات العامة</h2>
+                            <form id="general-settings-form">
+                                <div class="mb-4">
+                                    <label for="company-name" class="block text-sm font-medium text-gray-700 mb-2">اسم الشركة</label>
+                                    <input type="text" id="company-name" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" value="شركة الإنتاج الفني">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="company-address" class="block text-sm font-medium text-gray-700 mb-2">عنوان الشركة</label>
+                                    <textarea id="company-address" rows="3" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">القاهرة، مصر</textarea>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="company-phone" class="block text-sm font-medium text-gray-700 mb-2">رقم الهاتف</label>
+                                    <input type="tel" id="company-phone" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" value="+20 123 456 7890">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="company-email" class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                                    <input type="email" id="company-email" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" value="info@company.com">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="default-currency" class="block text-sm font-medium text-gray-700 mb-2">العملة الافتراضية</label>
+                                    <select id="default-currency" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                        <option value="EGP" selected>جنيه مصري (ج.م)</option>
+                                        <option value="USD">دولار أمريكي ($)</option>
+                                        <option value="EUR">يورو (€)</option>
+                                        <option value="SAR">ريال سعودي (ر.س)</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-cinematic px-6 py-2">
+                                    <i class="fas fa-save mr-2"></i>
+                                    حفظ الإعدادات
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- User Profile Settings -->
+                        <div class="dashboard-card p-6">
+                            <h2 class="text-xl font-bold text-gray-900 mb-6">إعدادات الملف الشخصي</h2>
+                            <form id="profile-settings-form">
+                                <div class="mb-4">
+                                    <label for="user-fullname" class="block text-sm font-medium text-gray-700 mb-2">الاسم الكامل</label>
+                                    <input type="text" id="user-fullname" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" value="المدير العام">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="user-email" class="block text-sm font-medium text-gray-700 mb-2">البريد الإلكتروني</label>
+                                    <input type="email" id="user-email" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" value="admin@company.com">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="user-phone" class="block text-sm font-medium text-gray-700 mb-2">رقم الهاتف</label>
+                                    <input type="tel" id="user-phone" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" value="+20 123 456 7890">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="user-language" class="block text-sm font-medium text-gray-700 mb-2">اللغة</label>
+                                    <select id="user-language" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                        <option value="ar" selected>العربية</option>
+                                        <option value="en">English</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-cinematic px-6 py-2">
+                                    <i class="fas fa-save mr-2"></i>
+                                    تحديث الملف الشخصي
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Security Settings -->
+                        <div class="dashboard-card p-6">
+                            <h2 class="text-xl font-bold text-gray-900 mb-6">إعدادات الأمان</h2>
+                            <form id="security-settings-form">
+                                <div class="mb-4">
+                                    <label for="current-password" class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور الحالية</label>
+                                    <input type="password" id="current-password" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="new-password" class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور الجديدة</label>
+                                    <input type="password" id="new-password" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                </div>
+                                <div class="mb-4">
+                                    <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-2">تأكيد كلمة المرور الجديدة</label>
+                                    <input type="password" id="confirm-password" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <input type="checkbox" id="enable-2fa" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded">
+                                    <label for="enable-2fa" class="ml-2 block text-sm text-gray-900">تفعيل المصادقة الثنائية</label>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <input type="checkbox" id="login-notifications" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked>
+                                    <label for="login-notifications" class="ml-2 block text-sm text-gray-900">إشعارات تسجيل الدخول</label>
+                                </div>
+                                <button type="submit" class="btn-cinematic px-6 py-2">
+                                    <i class="fas fa-save mr-2"></i>
+                                    تحديث إعدادات الأمان
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Notification Settings -->
+                        <div class="dashboard-card p-6">
+                            <h2 class="text-xl font-bold text-gray-900 mb-6">إعدادات الإشعارات</h2>
+                            <form id="notification-settings-form">
+                                <div class="flex items-center mb-4">
+                                    <input type="checkbox" id="email-notifications" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked>
+                                    <label for="email-notifications" class="ml-2 block text-sm text-gray-900">إشعارات البريد الإلكتروني</label>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <input type="checkbox" id="project-notifications" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked>
+                                    <label for="project-notifications" class="ml-2 block text-sm text-gray-900">إشعارات المشاريع</label>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <input type="checkbox" id="budget-alerts" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked>
+                                    <label for="budget-alerts" class="ml-2 block text-sm text-gray-900">تنبيهات الميزانية</label>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <input type="checkbox" id="payment-reminders" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded" checked>
+                                    <label for="payment-reminders" class="ml-2 block text-sm text-gray-900">تذكيرات الدفع</label>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="notification-frequency" class="block text-sm font-medium text-gray-700 mb-2">تكرار الإشعارات</label>
+                                    <select id="notification-frequency" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                        <option value="immediate" selected>فوري</option>
+                                        <option value="daily">يومي</option>
+                                        <option value="weekly">أسبوعي</option>
+                                        <option value="monthly">شهري</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-cinematic px-6 py-2">
+                                    <i class="fas fa-save mr-2"></i>
+                                    حفظ إعدادات الإشعارات
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- System Settings -->
+                        <div class="dashboard-card p-6">
+                            <h2 class="text-xl font-bold text-gray-900 mb-6">إعدادات النظام</h2>
+                            <form id="system-settings-form">
+                                <div class="mb-4">
+                                    <label for="backup-frequency" class="block text-sm font-medium text-gray-700 mb-2">تكرار النسخ الاحتياطي</label>
+                                    <select id="backup-frequency" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500">
+                                        <option value="daily" selected>يومي</option>
+                                        <option value="weekly">أسبوعي</option>
+                                        <option value="monthly">شهري</option>
+                                        <option value="manual">يدوي</option>
+                                    </select>
+                                </div>
+                                <div class="mb-4">
+                                    <label for="session-timeout" class="block text-sm font-medium text-gray-700 mb-2">انتهاء صلاحية الجلسة (بالدقائق)</label>
+                                    <input type="number" id="session-timeout" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-red-500" value="30" min="5" max="480">
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <input type="checkbox" id="maintenance-mode" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded">
+                                    <label for="maintenance-mode" class="ml-2 block text-sm text-gray-900">وضع الصيانة</label>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <input type="checkbox" id="debug-mode" class="h-4 w-4 text-red-600 focus:ring-red-500 border-gray-300 rounded">
+                                    <label for="debug-mode" class="ml-2 block text-sm text-gray-900">وضع التطوير (Debug Mode)</label>
+                                </div>
+                                <button type="submit" class="btn-cinematic px-6 py-2">
+                                    <i class="fas fa-save mr-2"></i>
+                                    حفظ إعدادات النظام
+                                </button>
+                                <button type="button" onclick="createBackup()" class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-600">
+                                    <i class="fas fa-download mr-2"></i>
+                                    إنشاء نسخة احتياطية
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- Database Management -->
+                        <div class="dashboard-card p-6">
+                            <h2 class="text-xl font-bold text-gray-900 mb-6">إدارة قاعدة البيانات</h2>
+                            <div class="grid grid-cols-2 gap-4 mb-6">
+                                <div class="text-center">
+                                    <p class="text-sm font-medium text-gray-600">عدد المشاريع</p>
+                                    <p class="text-2xl font-bold text-gray-900" id="projects-count">0</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm font-medium text-gray-600">عدد المعاملات</p>
+                                    <p class="text-2xl font-bold text-gray-900" id="transactions-count">0</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm font-medium text-gray-600">عدد المستخدمين</p>
+                                    <p class="text-2xl font-bold text-gray-900" id="users-count">0</p>
+                                </div>
+                                <div class="text-center">
+                                    <p class="text-sm font-medium text-gray-600">حجم قاعدة البيانات</p>
+                                    <p class="text-2xl font-bold text-gray-900" id="database-size">0 KB</p>
+                                </div>
+                            </div>
+                            <button type="button" onclick="optimizeDatabase()" class="btn-cinematic px-6 py-2">
+                                <i class="fas fa-database mr-2"></i>
+                                تحسين قاعدة البيانات
+                            </button>
+                            <button type="button" onclick="resetDatabase()" class="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600">
+                                <i class="fas fa-exclamation-triangle mr-2"></i>
+                                إعادة تعيين البيانات
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script src="settings.js"></script>
+</body>
+</html>
+

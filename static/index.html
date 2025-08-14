@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام المحاسبة للإنتاج الفني</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-red-900 min-h-screen flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
+        <div class="text-center mb-8">
+            <div class="mx-auto w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-film text-white text-2xl"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-800">نظام المحاسبة للإنتاج الفني</h1>
+            <p class="text-gray-600 mt-2">مرحباً بك في نظام إدارة المشاريع والميزانيات</p>
+        </div>
+
+        <div id="loadingMessage" class="text-center">
+            <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto mb-4"></div>
+            <p class="text-gray-600">جاري التحقق من حالة تسجيل الدخول...</p>
+        </div>
+
+        <div id="errorMessage" class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg hidden">
+            <i class="fas fa-exclamation-triangle ml-2"></i>
+            <span id="errorText">حدث خطأ في الاتصال</span>
+        </div>
+
+        <div class="mt-6 text-center">
+            <a href="/login.html" class="text-red-600 hover:text-red-800 text-sm">
+                الانتقال إلى صفحة تسجيل الدخول
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Prevent infinite loading by checking authentication once
+        let authCheckCompleted = false;
+        
+        window.addEventListener('load', async function() {
+            if (authCheckCompleted) return;
+            authCheckCompleted = true;
+            
+            const loadingDiv = document.getElementById('loadingMessage');
+            const errorDiv = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            
+            try {
+                const response = await fetch('/api/current-user', {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    // User is logged in, redirect to dashboard
+                    window.location.href = '/dashboard.html';
+                } else {
+                    // User not logged in, redirect to login
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                loadingDiv.classList.add('hidden');
+                errorText.textContent = 'حدث خطأ في الاتصال بالخادم';
+                errorDiv.classList.remove('hidden');
+                
+                // Fallback: redirect to login after 3 seconds
+                setTimeout(() => {
+                    window.location.href = '/login.html';
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>
+

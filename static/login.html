@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - نظام المحاسبة للإنتاج الفني</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-gray-900 via-gray-800 to-red-900 min-h-screen flex items-center justify-center">
+    <div class="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md">
+        <div class="text-center mb-8">
+            <div class="mx-auto w-16 h-16 bg-red-600 rounded-full flex items-center justify-center mb-4">
+                <i class="fas fa-film text-white text-2xl"></i>
+            </div>
+            <h1 class="text-2xl font-bold text-gray-800">نظام المحاسبة للإنتاج الفني</h1>
+            <p class="text-gray-600 mt-2">تسجيل الدخول إلى حسابك</p>
+        </div>
+
+        <form id="loginForm" class="space-y-6">
+            <div>
+                <label for="username" class="block text-sm font-medium text-gray-700 mb-2">اسم المستخدم</label>
+                <div class="relative">
+                    <input type="text" id="username" name="username" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent pr-10"
+                           placeholder="أدخل اسم المستخدم">
+                    <i class="fas fa-user absolute right-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">كلمة المرور</label>
+                <div class="relative">
+                    <input type="password" id="password" name="password" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent pr-10"
+                           placeholder="أدخل كلمة المرور">
+                    <i class="fas fa-lock absolute right-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <label class="flex items-center">
+                    <input type="checkbox" class="rounded border-gray-300 text-red-600 focus:ring-red-500">
+                    <span class="mr-2 text-sm text-gray-600">تذكرني</span>
+                </label>
+                <a href="#" class="text-sm text-red-600 hover:text-red-500">نسيت كلمة المرور؟</a>
+            </div>
+
+            <button type="submit" 
+                    class="w-full bg-red-600 text-white py-3 px-4 rounded-lg hover:bg-red-700 focus:ring-4 focus:ring-red-200 font-medium transition duration-200">
+                <i class="fas fa-sign-in-alt ml-2"></i>
+                تسجيل الدخول
+            </button>
+        </form>
+
+        <div id="errorMessage" class="mt-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg hidden">
+            <i class="fas fa-exclamation-triangle ml-2"></i>
+            <span id="errorText"></span>
+        </div>
+
+        <div id="loadingMessage" class="mt-4 p-3 bg-blue-100 border border-blue-400 text-blue-700 rounded-lg hidden">
+            <i class="fas fa-spinner fa-spin ml-2"></i>
+            جاري تسجيل الدخول...
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('errorMessage');
+            const loadingDiv = document.getElementById('loadingMessage');
+            const errorText = document.getElementById('errorText');
+            
+            // Hide previous messages
+            errorDiv.classList.add('hidden');
+            loadingDiv.classList.remove('hidden');
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ username, password })
+                });
+                
+                const data = await response.json();
+                loadingDiv.classList.add('hidden');
+                
+                if (response.ok) {
+                    // Store user data in localStorage
+                    localStorage.setItem('currentUser', JSON.stringify(data.user));
+                    // Redirect to dashboard
+                    window.location.href = '/dashboard.html';
+                } else {
+                    errorText.textContent = data.error || 'حدث خطأ في تسجيل الدخول';
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (error) {
+                loadingDiv.classList.add('hidden');
+                errorText.textContent = 'حدث خطأ في الاتصال بالخادم';
+                errorDiv.classList.remove('hidden');
+            }
+        });
+
+        // Check if user is already logged in
+        window.addEventListener('load', async function() {
+            try {
+                const response = await fetch('/api/current-user', {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    window.location.href = '/dashboard.html';
+                }
+            } catch (error) {
+                // User not logged in, stay on login page
+            }
+        });
+    </script>
+</body>
+</html>
+
