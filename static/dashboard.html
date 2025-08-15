@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام المحاسبة للإنتاج الفني</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="flex h-screen overflow-hidden">
+        <!-- Sidebar for desktop -->
+        <div class="sidebar w-64 text-white hidden md:block">
+            <div class="p-4">
+                <div class="flex items-center justify-center mb-8">
+                    <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                        <i class="fas fa-film text-white"></i>
+                    </div>
+                </div>
+                <div class="mb-10 text-center">
+                    <div class="h-16 w-16 mx-auto rounded-full border-2 border-white mb-2 bg-gray-600 flex items-center justify-center">
+                        <i class="fas fa-user text-white text-xl"></i>
+                    </div>
+                    <h4 class="font-bold" id="currentUserName">المستخدم</h4>
+                    <p class="text-xs text-gray-300" id="currentUserRole">الدور</p>
+                </div>
+                <nav>
+                    <div class="mb-4">
+                        <h5 class="text-sm uppercase text-gray-400 mb-2 px-4">القائمة الرئيسية</h5>
+                        <a href="/dashboard.html" class="block py-2 px-4 rounded-lg bg-gray-800 text-white mb-1">
+                            <i class="fas fa-chart-line mr-2"></i> لوحة التحكم
+                        </a>
+                        <a href="/projects.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-film mr-2"></i> المشاريع
+                        </a>
+                        <a href="/payroll.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-money-bill-wave mr-2"></i> الرواتب والمصروفات
+                        </a>
+                        <a href="/transactions.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-dollar-sign mr-2"></i> المعاملات
+                        </a>
+                        <a href="/reports.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-chart-pie mr-2"></i> التقارير
+                        </a>
+                    </div>
+                    <div class="mb-4" id="adminSection" style="display: none;">
+                        <h5 class="text-sm uppercase text-gray-400 mb-2 px-4">الإدارة</h5>
+                        <a href="/users.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-users mr-2"></i> المستخدمين
+                        </a>
+                        <a href="/settings.html" class="block py-2 px-4 rounded-lg hover:bg-gray-800 text-gray-300 mb-1">
+                            <i class="fas fa-cog mr-2"></i> الإعدادات
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </div>
+
+        <!-- Mobile menu overlay -->
+        <div id="mobileMenu" class="fixed inset-0 z-50 md:hidden hidden">
+            <div class="fixed inset-0 bg-black bg-opacity-50" id="mobileMenuOverlay"></div>
+            <div class="fixed right-0 top-0 h-full w-64 bg-gray-800 text-white transform transition-transform duration-300 ease-in-out">
+                <div class="p-4">
+                    <div class="flex justify-between items-center mb-8">
+                        <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center">
+                            <i class="fas fa-film text-white"></i>
+                        </div>
+                        <button id="closeMobileMenu" class="text-white hover:text-gray-300">
+                            <i class="fas fa-times text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="mb-10 text-center">
+                        <div class="h-16 w-16 mx-auto rounded-full border-2 border-white mb-2 bg-gray-600 flex items-center justify-center">
+                            <i class="fas fa-user text-white text-xl"></i>
+                        </div>
+                        <h4 class="font-bold" id="mobileCurrentUserName">المستخدم</h4>
+                        <p class="text-xs text-gray-300" id="mobileCurrentUserRole">الدور</p>
+                    </div>
+                    <nav>
+                        <div class="mb-4">
+                            <h5 class="text-sm uppercase text-gray-400 mb-2 px-4">القائمة الرئيسية</h5>
+                            <a href="/dashboard.html" class="block py-2 px-4 rounded-lg bg-gray-700 text-white mb-1">
+                                <i class="fas fa-chart-line mr-2"></i> لوحة التحكم
+                            </a>
+                            <a href="/projects.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-film mr-2"></i> المشاريع
+                            </a>
+                            <a href="/transactions.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-dollar-sign mr-2"></i> المعاملات
+                            </a>
+                            <a href="/reports.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-chart-pie mr-2"></i> التقارير
+                            </a>
+                        </div>
+                        <div class="mb-4" id="mobileAdminSection" style="display: none;">
+                            <h5 class="text-sm uppercase text-gray-400 mb-2 px-4">الإدارة</h5>
+                            <a href="/users.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-users mr-2"></i> المستخدمين
+                            </a>
+                            <a href="/settings.html" class="block py-2 px-4 rounded-lg hover:bg-gray-700 text-gray-300 mb-1">
+                                <i class="fas fa-cog mr-2"></i> الإعدادات
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- المحتوى الرئيسي -->
+        <div class="flex-1 overflow-auto">
+            <header class="bg-white shadow-sm">
+                <div class="flex justify-between items-center p-4">
+                    <button id="mobileMenuButton" class="md:hidden text-gray-600 hover:text-gray-800">
+                        <i class="fas fa-bars fa-lg"></i>
+                    </button>
+                    <div class="flex items-center space-x-4">
+                        <div class="relative">
+                            <input type="text" placeholder="بحث..." class="bg-gray-100 rounded-full py-2 px-4 pl-10 focus:outline-none focus:ring-2 focus:ring-red-200 w-64">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                        </div>
+                        <button class="text-gray-600 relative">
+                            <i class="fas fa-bell fa-lg"></i>
+                            <span class="absolute -top-1 -right-1 bg-red-500 text-white rounded-full h-4 w-4 flex items-center justify-center text-xs">3</span>
+                        </button>
+                        <div class="flex items-center space-x-2">
+                            <div class="h-8 w-8 rounded-full bg-gray-600 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-sm"></i>
+                            </div>
+                            <span class="hidden md:inline" id="headerUserName">المستخدم</span>
+                            <button onclick="logout()" class="text-red-600 hover:text-red-800">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <main class="p-6">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-bold text-gray-900 mb-2">مرحباً بك، <span id="welcomeUserName">المستخدم</span></h1>
+                    <p class="text-gray-600">إليك نظرة عامة على أداء شركة الإنتاج الفني</p>
+                </div>
+
+                <!-- إحصائيات سريعة -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="dashboard-card p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                                <i class="fas fa-film text-xl"></i>
+                            </div>
+                            <div class="mr-4">
+                                <p class="text-sm font-medium text-gray-600">إجمالي المشاريع</p>
+                                <p class="text-2xl font-bold text-gray-900" id="totalProjects">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-green-100 text-green-600">
+                                <i class="fas fa-play text-xl"></i>
+                            </div>
+                            <div class="mr-4">
+                                <p class="text-sm font-medium text-gray-600">المشاريع النشطة</p>
+                                <p class="text-2xl font-bold text-gray-900" id="activeProjects">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-yellow-100 text-yellow-600">
+                                <i class="fas fa-dollar-sign text-xl"></i>
+                            </div>
+                            <div class="mr-4">
+                                <p class="text-sm font-medium text-gray-600">إجمالي الميزانية</p>
+                                <p class="text-2xl font-bold text-gray-900" id="totalBudget">0 ج.م</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-card p-6">
+                        <div class="flex items-center">
+                            <div class="p-3 rounded-full bg-red-100 text-red-600">
+                                <i class="fas fa-chart-line text-xl"></i>
+                            </div>
+                            <div class="mr-4">
+                                <p class="text-sm font-medium text-gray-600">إجمالي المصروفات</p>
+                                <p class="text-2xl font-bold text-gray-900" id="totalSpent">0 ج.م</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                    <!-- رسم بياني للميزانية -->
+                    <div class="dashboard-card p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">نظرة عامة على الميزانية</h3>
+                        <canvas id="budgetChart" width="400" height="200"></canvas>
+                    </div>
+
+                    <!-- المعاملات الأخيرة -->
+                    <div class="dashboard-card p-6">
+                        <h3 class="text-lg font-semibold text-gray-900 mb-4">المعاملات الأخيرة</h3>
+                        <div id="recentTransactions" class="space-y-3">
+                            <!-- سيتم ملء البيانات هنا بواسطة JavaScript -->
+                        </div>
+                        <div class="mt-4">
+                            <a href="/transactions.html" class="text-red-600 hover:text-red-800 text-sm font-medium">
+                                عرض جميع المعاملات <i class="fas fa-arrow-left mr-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- أحدث المشاريع -->
+                <div class="dashboard-card p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900">المشاريع الحالية</h3>
+                        <a href="/projects.html" class="btn-cinematic text-sm">
+                            <i class="fas fa-plus ml-1"></i>
+                            مشروع جديد
+                        </a>
+                    </div>
+                    <div id="currentProjects" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- سيتم ملء البيانات هنا بواسطة JavaScript -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // Mobile menu functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.getElementById('mobileMenuButton');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const closeMobileMenu = document.getElementById('closeMobileMenu');
+            const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
+            
+            // Open mobile menu
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.remove('hidden');
+                document.body.style.overflow = 'hidden';
+            });
+            
+            // Close mobile menu
+            function closeMobileMenuFunc() {
+                mobileMenu.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            }
+            
+            closeMobileMenu.addEventListener('click', closeMobileMenuFunc);
+            mobileMenuOverlay.addEventListener('click', closeMobileMenuFunc);
+            
+            // Close menu when clicking on a link
+            const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+            mobileMenuLinks.forEach(link => {
+                link.addEventListener('click', closeMobileMenuFunc);
+            });
+        });
+
+        // Check authentication and load user data
+        window.addEventListener('load', async function() {
+            try {
+                const response = await fetch('/api/current-user', {
+                    credentials: 'include'
+                });
+                
+                if (response.ok) {
+                    const userData = await response.json();
+                    document.getElementById('currentUserName').textContent = userData.username;
+                    document.getElementById('currentUserRole').textContent = userData.role;
+                    document.getElementById('mobileCurrentUserName').textContent = userData.username;
+                    document.getElementById('mobileCurrentUserRole').textContent = userData.role;
+                    document.getElementById('headerUserName').textContent = userData.username;
+                    document.getElementById('welcomeUserName').textContent = userData.username;
+                    
+                    // Show admin sections if user is admin
+                    if (userData.role === 'admin') {
+                        document.getElementById('adminSection').style.display = 'block';
+                        document.getElementById('mobileAdminSection').style.display = 'block';
+                    }
+                    
+                    loadDashboardData();
+                } else {
+                    window.location.href = '/login.html';
+                }
+            } catch (error) {
+                console.error('Error checking authentication:', error);
+                window.location.href = '/login.html';
+            }
+        });
+
+        async function loadDashboardData() {
+            try {
+                // Load dashboard statistics
+                const statsResponse = await fetch('/api/dashboard/stats', {
+                    credentials: 'include'
+                });
+                
+                if (statsResponse.ok) {
+                    const stats = await statsResponse.json();
+                    document.getElementById('totalProjects').textContent = stats.totalProjects || 0;
+                    document.getElementById('activeProjects').textContent = stats.activeProjects || 0;
+                    document.getElementById('totalBudget').textContent = (stats.totalBudget || 0) + ' ج.م';
+                    document.getElementById('totalSpent').textContent = (stats.totalSpent || 0) + ' ج.م';
+                }
+            } catch (error) {
+                console.error('Error loading dashboard data:', error);
+            }
+        }
+
+        function logout() {
+            fetch('/api/logout', {
+                method: 'POST',
+                credentials: 'include'
+            }).then(() => {
+                localStorage.removeItem('currentUser');
+                window.location.href = '/login.html';
+            });
+        }
+    </script>
+</body>
+</html>
+
